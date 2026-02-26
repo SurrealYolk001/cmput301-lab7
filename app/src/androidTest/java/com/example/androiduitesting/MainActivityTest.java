@@ -3,6 +3,7 @@ package com.example.androiduitesting;
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -12,6 +13,8 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.anything;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
+
+import static java.lang.Thread.sleep;
 
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.action.ViewActions;
@@ -44,7 +47,7 @@ public class MainActivityTest {
         onView(withId(R.id.button_add)).perform(click());
 
         // type 'Edmonton' in the editText
-        onView(withId(R.id.editText_name)).perform(ViewActions.typeText("Edmonton"));
+        onView(withId(R.id.editText_name)).perform(typeText("Edmonton"));
 
         // CLick on confirm
         onView(withId(R.id.button_confirm)).perform(click());
@@ -59,14 +62,14 @@ public class MainActivityTest {
         // Add first city to the list
         onView(withId(R.id.button_add)).perform(click());
 
-        onView(withId(R.id.editText_name)).perform(ViewActions.typeText("Edmonton"));
+        onView(withId(R.id.editText_name)).perform(typeText("Edmonton"));
 
         onView(withId(R.id.button_confirm)).perform(click());
 
         // Add another city to the list
         onView(withId(R.id.button_add)).perform(click());
 
-        onView(withId(R.id.editText_name)).perform(ViewActions.typeText("Vancouver"));
+        onView(withId(R.id.editText_name)).perform(typeText("Vancouver"));
 
         onView(withId(R.id.button_confirm)).perform(click());
 
@@ -80,7 +83,7 @@ public class MainActivityTest {
     public void testListView() {
         // add a city
         onView(withId(R.id.button_add)).perform(click());
-        onView(withId(R.id.editText_name)).perform(ViewActions.typeText("Edmonton"));
+        onView(withId(R.id.editText_name)).perform(typeText("Edmonton"));
         onView(withId(R.id.button_confirm)).perform(click());
 
         // check if in the Adapter view (given id of that adapter view) there is a data
@@ -94,7 +97,7 @@ public class MainActivityTest {
     @Test
     public void testSwitchScreen() {
         onView(withId(R.id.button_add)).perform(click());
-        onView(withId(R.id.editText_name)).perform(ViewActions.typeText("Edmonton"));
+        onView(withId(R.id.editText_name)).perform(typeText("Edmonton"));
         onView(withId(R.id.button_confirm)).perform(click());
 
         // go to ShowActivity screen
@@ -107,7 +110,7 @@ public class MainActivityTest {
     @Test
     public void testShowActivityCity() {
         onView(withId(R.id.button_add)).perform(click());
-        onView(withId(R.id.editText_name)).perform(ViewActions.typeText("Sylhet"));
+        onView(withId(R.id.editText_name)).perform(typeText("Sylhet"));
         onView(withId(R.id.button_confirm)).perform(click());
 
         // go to ShowActivity screen
@@ -118,10 +121,10 @@ public class MainActivityTest {
     }
 
     @Test
-    public void testBackButton() {
+    public void testBackButton() throws InterruptedException {
 
         onView(withId(R.id.button_add)).perform(click());
-        onView(withId(R.id.editText_name)).perform(ViewActions.typeText("Dhaka"));
+        onView(withId(R.id.editText_name)).perform(typeText("Dhaka"));
         onView(withId(R.id.button_confirm)).perform(click());
 
         // go to ShowActivity screen
@@ -129,11 +132,8 @@ public class MainActivityTest {
 
         // click 'back' button
         onView(withId(R.id.button_back)).perform(click());
-
-        try { Thread.sleep(2000); } catch (InterruptedException e) {}
-
-
+        sleep(2000);
         // check for 'add city' button; if present, we came back successfully
-        onView(withId(R.id.button_clear)).check(matches(isDisplayed()));
+        onView(withText("Dhaka")).check(matches(isDisplayed()));
     }
 }

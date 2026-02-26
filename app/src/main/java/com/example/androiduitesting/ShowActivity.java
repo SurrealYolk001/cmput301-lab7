@@ -26,6 +26,7 @@ public class ShowActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish(); // closes this screen and returns to the previous one
+
             }
         });
     }
